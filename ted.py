@@ -25,7 +25,7 @@ import time
 from selenium.webdriver.common.keys import Keys
 # to scroll up a webpage
 
-
+# dictation letters
 special_symbal=[]
 for i in range(65,91):
     special_symbal.append(chr(i))
@@ -97,7 +97,7 @@ print('Title :',title)
 # print(title)
 # print(f_list[0]==title+'\n')
 # click transcript
-for i in range(10):
+for i in range(10): # wait total 10 sec
     try:
         browser.find_element_by_xpath('//*[@id="content"]/div/div[4]/div[1]/div/a[3]').click()
         # If there are theree options
@@ -116,32 +116,45 @@ for i in range(10):
                 print('options are located on the right side of the webpage')
                 break
             except:
-                print('Waiting for webpage(I will click "transcript")')
-                time.sleep(1)
-                # sometimes, loading elements takes long time.
+                try:
+                    browser.find_element_by_xpath('//*[@id="maincontent"]/div/div/div/div/div[2]/div[3]/div[2]/button').click()
+                    # if the pane is located on the right
+                    print('options are located on the right side of the webpage')
+                    break
+                except:
+                    print('Waiting for webpage(I will click "transcript")')
+                    time.sleep(1)
+                    # sometimes, loading elements takes long time.
 
-select_element = browser.find_element_by_xpath('//*[@id="content"]/div/div[4]/div[2]/section/div[1]/div[1]/select')
+select_element = browser.find_element_by_xpath('//*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[2]/div[1]/div/select') #full
 # 목차 가져오기
+
 select_object = Select(select_element)
 select_object.select_by_visible_text('English')
 # 영어 선택하기
 
-for i in range(10):
-    try:
-        browser.find_element_by_xpath('//*[@id="ted-player"]/div[4]/div/div/div[2]/div/div[5]/button').click()
-        break
-    except:
-        print('loading for subtitle controls')
-        time.sleep(1)
-        # click subtitle controls
-browser.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div/div[1]/button').click()
-# click 'off'
-browser.find_element_by_xpath('/html/body/div[3]/div/div/div/div[1]/div/button').click()
-# click 'x'
+# ted changed it's defalt value to off. If you need to turn of subtitles manualy, you need to use this code.
+# for i in range(10):
+#     try:
+#         browser.find_element_by_xpath('//*[@id="ted-player"]/div[4]/div/div/div[2]/div/div[5]/button').click()
+#         break
+#     except:
+#         print('loading for subtitle controls')
+#         time.sleep(1)
+#         # click subtitle controls
+# browser.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div/div[1]/button').click()
+# # click 'off'
+# browser.find_element_by_xpath('/html/body/div[3]/div/div/div/div[1]/div/button').click()
+# # click 'x'
 
 for i in range(10):
     try:
-        english_sentences=browser.find_elements_by_xpath('//*[@id="content"]/div/div[4]/div[2]/section/div/div[2]/p/span/a') 
+        # english_sentences=browser.find_elements_by_xpath('//*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span[1]') 
+        english_sentences=browser.find_elements_by_xpath('//*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span') 
+                                                        #   //*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span[1]
+        print('english_sentencese :' ,english_sentences)
+
+        # english_sentences=browser.find_elements_by_xpath('//*[@id="content"]/div/div[4]/div[2]/section/div/div[2]/p/span/a') 
         # this for big window
         # //*[@id="content"]/div/div[4]/div[2]/section/div/div[2]/p/span/a
         # //*[@id="content"]/div/div[4]/div[2]/section/div[2]/div[2]/p/span[1]/a
@@ -230,8 +243,9 @@ def pause(pause_count):
                                 print("You've finished the last line. Congratulation")
                             except:
                                 try:
-                                    browser.find_element_by_xpath('//*[@id="ted-player"]/div[3]/button').click() 
+                                    browser.find_element_by_xpath('//*[@id="ted-player"]/button').click() 
                                     # windows, on my laptop
+                        
                                 except:
                                     print("try to pause again")
                                     browser.find_element_by_tag_name('html').send_keys(Keys.HOME)
