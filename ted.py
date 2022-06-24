@@ -375,7 +375,7 @@ def main(url):
             else:
                 print(english_sentences[english_count[0]-1].text)
                 for k in range(len(guess)):
-                    if guess[j]==answer[j]:
+                    if guess[k]==answer[k]:
                         print(' ',end='')
 
                     else:
