@@ -149,19 +149,25 @@ select_object.select_by_visible_text('English')
 
 for i in range(10):
     try:
-        # english_sentences=browser.find_elements_by_xpath('//*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span[1]') 
-        english_sentences=browser.find_elements_by_xpath('//*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span') 
-                                                        #   //*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span[1]
-        print('english_sentencese :' ,english_sentences)
+        for j in range(10):
 
-        # english_sentences=browser.find_elements_by_xpath('//*[@id="content"]/div/div[4]/div[2]/section/div/div[2]/p/span/a') 
-        # this for big window
-        # //*[@id="content"]/div/div[4]/div[2]/section/div/div[2]/p/span/a
-        # //*[@id="content"]/div/div[4]/div[2]/section/div[2]/div[2]/p/span[1]/a
-        # //*[@id="content"]/div/div[4]/div[2]/section/div[2]/div[2]/p/span[1]/a
-        # //*[@id="content"]/div/div[4]/div[2]/section/div[3]/div[2]/p/span[1]/a
-        #  시간 별로 파트가 나눠진 경우까지 포함하기 위해서 div[2]>div로 바꿈.
-        #print(english_sentences)
+            # english_sentences=browser.find_elements_by_xpath('//*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span[1]') 
+            english_sentences=browser.find_elements_by_xpath('//*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span') 
+            if len(english_sentences)>0:
+                break                 
+            else:
+                print('Wating for webpage(bringing sentences)')
+                time.sleep(1)                               #   //*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span[1]
+            # print('english_sentencese :' ,english_sentences)
+
+            # english_sentences=browser.find_elements_by_xpath('//*[@id="content"]/div/div[4]/div[2]/section/div/div[2]/p/span/a') 
+            # this for big window
+            # //*[@id="content"]/div/div[4]/div[2]/section/div/div[2]/p/span/a
+            # //*[@id="content"]/div/div[4]/div[2]/section/div[2]/div[2]/p/span[1]/a
+            # //*[@id="content"]/div/div[4]/div[2]/section/div[2]/div[2]/p/span[1]/a
+            # //*[@id="content"]/div/div[4]/div[2]/section/div[3]/div[2]/p/span[1]/a
+            #  시간 별로 파트가 나눠진 경우까지 포함하기 위해서 div[2]>div로 바꿈.
+            #print(english_sentences)
         break
     except:
         print('Wating for webpage(bringing sentences)')
@@ -192,6 +198,8 @@ if writer_title2==writer_title1:
     #     for i in f_list[-1].split(' ')[4:-1]:
     #         answer_count.append(int(i))
     if len(f_list[-1].split(' ')[4:-1])<len(english_sentences):
+        # correct wrong total title correct_line_numbers
+        # 0       1     2     3     4
         answer_count=[0,0,int(f_list[-1].split(' ')[2]),writer_title2]
         for i in f_list[-1].split(' ')[4:-1]:
             answer_count.append(int(i))        
