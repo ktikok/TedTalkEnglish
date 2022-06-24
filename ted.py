@@ -177,39 +177,53 @@ print("how many sentences? :",len(english_sentences))
 
 url=browser.current_url
 
-f=open('score_list7.txt')
-# f=open('score_score.txt')
-f_list=f.readlines()
-writer_title1=f_list[-1].split(' ')[3]
-# writer_title1=f_list[-1].split(' ')[3].split('/')[4]
-# title, in the text file
 writer_title2=url.split('/')[4]
 # webpage's title
 
-if writer_title2==writer_title1:
-    # if int(f_list[-1].split(' ')[1])+int(f_list[-1].split(' ')[0])<len(english_sentences):
-    #     # if wrong + crrect < total sentence nunber
-    #     answer_count=[int(f_list[-1].split(' ')[0]), int(f_list[-1].split(' ')[1]), 0, url]
-    #     # [correct, wrong, 0, url]
-    #     for i in f_list[-1].split(' ')[4:-1]:
-    #         answer_count.append(int(i))
-    # elif len(f_list[-1].split(' ')[4:-1])<len(english_sentences):
-    #     answer_count=[0,0,0,url]
-    #     for i in f_list[-1].split(' ')[4:-1]:
-    #         answer_count.append(int(i))
-    if len(f_list[-1].split(' ')[4:-1])<len(english_sentences):
-        # correct wrong total title correct_line_numbers
-        # 0       1     2     3     4
-        answer_count=[0,0,int(f_list[-1].split(' ')[2]),writer_title2]
-        for i in f_list[-1].split(' ')[4:-1]:
-            answer_count.append(int(i))        
-    else:
-        answer_count=[0,0,0,writer_title2]
-else:        
-    answer_count=[0,0,0,writer_title2]
-    # answer_count=[0,0,0,url]
 
+f=open('score_list7.txt')
+# f=open('score_score.txt')
+f_list=f.readlines()
 f.close()
+l = len(f_list)
+total_correct_num = 0
+answer_count1 = []
+for i in range(1,l):
+    if len(f_list[0-i].split(' '))<=1:
+        writer_title1=f_list[0-i].split(' ')[3]
+        # title which I practiced last time.
+        # writer_title1=f_list[-1].split(' ')[3].split('/')[4]
+        # title, in the text file
+
+        if writer_title2==writer_title1:
+            # if int(f_list[-1].split(' ')[1])+int(f_list[-1].split(' ')[0])<len(english_sentences):
+            #     # if wrong + crrect < total sentence nunber
+            #     answer_count=[int(f_list[-1].split(' ')[0]), int(f_list[-1].split(' ')[1]), 0, url]
+            #     # [correct, wrong, 0, url]
+            #     for i in f_list[-1].split(' ')[4:-1]:
+            #         answer_count.append(int(i))
+            # elif len(f_list[-1].split(' ')[4:-1])<len(english_sentences):
+            #     answer_count=[0,0,0,url]
+            #     for i in f_list[-1].split(' ')[4:-1]:
+            #         answer_count.append(int(i))
+            if total_correct_num<len(english_sentences):
+                # correct wrong total title correct_line_numbers
+                # 0       1     2     3     4
+                answer_count=[0,0,int(f_list[0-i].split(' ')[0]),writer_title2]
+
+            else:
+                answer_count=[0,0,0,writer_title2]
+        else:        
+            answer_count=[0,0,0,writer_title2]
+            # answer_count=[0,0,0,url]
+    else:
+        total_correct_num = total_correct_num + len(f_list[0-i].split(' ')[2:-1])
+        for j in f_list[0-i].split(' ')[2:-1]:
+            answer_count1.append(int(j))        
+
+answer_count = answer_count+answer_count1
+# answer_count2=[]
+
 english_count=[answer_count[2]]
 # english_count=[answer_count[0]+answer_count[1]]
 #'''
@@ -303,8 +317,14 @@ def finish(url):
     # answer_count[2]=answer_count[0]/(answer_count[0]+answer_count[1])
     answer_count[2]=english_count[0]
     f=open('score_list7.txt','a')
-    for i in answer_count: 
-        f.write('%s ' % str(i))
+    if writer_title2!=writer_title1:
+        f.write('%s ' % answer_count[3])
+    else:
+        f.write('%s ' % answer_count[3])
+
+        for i in answer_count: 
+            f.write('%s ' % str(i))
+
     f.write('\n')
     f.close()
     print('it is',english_count[0],'th sentence')
@@ -320,6 +340,7 @@ def main(url):
     #print(answer_count)
     #print(english_count)
     global english_sentences
+
     print("you will listen", len(english_sentences)-len(answer_count[4:]), "lines")
     
     if english_count[0] != 0:
@@ -362,7 +383,8 @@ def main(url):
                 # break
                 while (guess != 'ok' ):
                     guess=input()     
-                english_sentences=browser.find_elements_by_xpath('//*[@id="content"]/div/div[4]/div[2]/section/div/div[2]/p/span/a') # this for big window
+                # english_sentences=browser.find_elements_by_xpath('//*[@id="content"]/div/div[4]/div[2]/section/div/div[2]/p/span/a') # this for big window
+                english_sentences=browser.find_elements_by_xpath('//*[@id="maincontent"]/div/div/div/aside/div[2]/div[2]/div/div/div[1]/div[3]/div/span/span') 
 
             elif(guess=='save'):
                 raise
@@ -374,7 +396,13 @@ def main(url):
                 break
             else:
                 print(english_sentences[english_count[0]-1].text)
-                print('Wrong answer!')
+                for j in range(len(guess)):
+                    if guess[i]==answer[i]:
+                        print(' ',end='')
+                    else:
+                        print('^',end='')
+                # print('')
+                print(' > Wrong answer!')
                 answer_count[1]=answer_count[1]+1
                 break
     print('\ncorrect : ', answer_count[0], 'wrong : ', answer_count[1], 'score:',answer_count[0]/(answer_count[0]+answer_count[1]))
