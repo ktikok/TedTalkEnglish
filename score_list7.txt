@@ -186,3 +186,11 @@ total : chrect_line1 chrect_line2 ...
 
 helen_m_farrell_what_is_depression
 18 : 2 8 9 10 11 12 14 15 16 
+9 8 18 helen_m_farrell_what_is_depression 2 8 9 10 11 12 14 15 16 
+1 2 21 helen_m_farrell_what_is_depression 2 8 9 10 11 12 14 15 16 19 
+2 2 25 helen_m_farrell_what_is_depression 2 8 9 10 11 12 14 15 16 19 22 23 
+0 0 25 helen_m_farrell_what_is_depression 2 8 9 10 11 12 14 15 16 19 22 23 
+0 3 28 helen_m_farrell_what_is_depression 2 8 9 10 11 12 14 15 16 19 22 23 
+0 0 28 helen_m_farrell_what_is_depression 2 8 9 10 11 12 14 15 16 19 22 23 
+1 1 30 helen_m_farrell_what_is_depression 2 8 9 10 11 12 14 15 16 19 22 23 29 
+20 25 78 helen_m_farrell_what_is_depression 2 8 9 10 11 12 14 15 16 19 22 23 29 30 36 39 41 43 44 49 52 54 55 60 65 68 69 70 71 74 76 77 82 88 90 92 93 4 7 13 17 18 20 25 32 33 34 51 56 57 58 59 61 64 66 72 73 

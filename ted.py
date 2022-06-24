@@ -264,8 +264,8 @@ def pause(pause_count):
 
 def english(english_count):
     print('')
-    if english_count!=1:
-        print(english_sentences[english_count-2].text)
+    # if english_count!=1:
+    #     print(english_sentences[english_count-2].text)
     words = english_sentences[english_count-1]
     words=words.text
     letter=''
@@ -374,7 +374,14 @@ def main(url):
                 break
             else:
                 print(english_sentences[english_count[0]-1].text)
-                print('Wrong answer!')
+                for k in range(len(guess)):
+                    if guess[j]==answer[j]:
+                        print(' ',end='')
+
+                    else:
+                        print('^',end='')
+                # print('')
+                print(' > Wrong answer!')                
                 answer_count[1]=answer_count[1]+1
                 break
     print('\ncorrect : ', answer_count[0], 'wrong : ', answer_count[1], 'score:',answer_count[0]/(answer_count[0]+answer_count[1]))
