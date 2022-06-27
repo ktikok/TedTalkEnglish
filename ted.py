@@ -343,16 +343,19 @@ def main(url):
             #print((english_sentences[english_count+sentence_count-1]).text)
             guess=input()
             check=1
-            for i, j in zip(guess,answer):
-                if i != j and i in special_symbal:
-                    check=0
-                    break
-                else:
-                    pass
+            if len(guess)<len(answer):
+                check=0
+            else:
+                for i, j in zip(guess,answer):
+                    if i != j and i in special_symbal:
+                        check=0
+                        break
+                    else:
+                        pass
                 
             if(guess==''):
                 pause(0)
-            
+                english(english_count[0])
             elif(guess=='reload'):
                 pause(0)
                 #print(url)
@@ -367,7 +370,8 @@ def main(url):
             elif(guess=='save'):
                 raise
             
-            elif check==1 and len(guess)==len(answer):                    
+            elif check==1 :                    
+            # elif check==1 and len(guess)==len(answer): # I need to check the length if I use only "for i, j in zip(guess,answer):". Because that doesn't check every letters.
                 #print('Correct answer!')
                 answer_count[0]=answer_count[0]+1
                 answer_count.append(english_count[0])
@@ -375,11 +379,14 @@ def main(url):
             else:
                 print(english_sentences[english_count[0]-1].text)
                 for k in range(len(guess)):
-                    if guess[k]==answer[k]:
-                        print(' ',end='')
+                    if k < len(answer):
+                        if guess[k]==answer[k]:
+                            print(' ',end='')
 
+                        else:
+                            print('^',end='')
                     else:
-                        print('^',end='')
+                        print("you typed", k-len(answer)+1, "more letters.")
                 # print('')
                 print(' > Wrong answer!')                
                 answer_count[1]=answer_count[1]+1
@@ -396,6 +403,11 @@ def main(url):
         f=open('finished_videos.txt', 'a', encoding='utf-8')
         f.write('%s' % str(title))
         f.write('\n')
+        f.close()
+
+        f=open('score_list7.txt','w', encoding='utf-8')
+        f.write('%s' % str(title)) # erase list of subtile numbers.
+        f.write(' is done\n')
         f.close()
 
 if __name__=='__main__':
