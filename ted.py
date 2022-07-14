@@ -45,7 +45,14 @@ except:
 browser.maximize_window()
 # 브라우저 창을 최대로
 browser.get('https://www.ted.com/talks?sort=popular&duration=0-6&language=ko')
+browser.execute_script("window.open('https://en.dict.naver.com/');")
+
+browser.switch_to.window(browser.window_handles[0])
 # &language=ko&duration=0-6, popular
+# browser.minimize_window()
+# raise
+
+
 
 
 # bring my finished video titles
@@ -215,6 +222,47 @@ english_count=[answer_count[2]]
 #'''
 #print(url)
 
+# --------------------
+def search_dict(word, i=1):
+    # if i==1:
+    #     # browser.execute_script("window.open('https://en.dict.naver.com/#/search?range=word&page=1&query=apple&shouldSearchOpen=false&autoConvert=');")
+    #     # browser.execute_script("window.open('https://en.dict.naver.com/#/search?range=meaning&page=" + str(i) + "&query=" + str(word) + "&autoConvert=');")
+    #     browser.execute_script("window.open('https://en.dict.naver.com/#/search?range=word&page=" + str(i) + "&query=" + str(word) + "&shouldSearchOpen=false&autoConvert=');")
+        
+    browser.switch_to.window(browser.window_handles[1])
+    # browser.minimize_window()
+    
+    while(1):
+        browser.get("https://en.dict.naver.com/#/search?range=word&page=" + str(i) + "&query=" + str(word) + "&shouldSearchOpen=false&autoConvert=")
+        
+        
+        # print(browser.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]').text)
+        for i in range(10):
+            try:
+                t = browser.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/div[3]/div[1]').text
+                break
+            except:
+                time.sleep(1)
+        # t = t.split('\n')
+        print(t)
+        q = input("If you want to stop, type 'q'")
+        if q != 'q':
+            i = i + 1
+        else:
+            break
+                                    # /html/body/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div/a
+                                    # /html/body/div[2]/div[2]/div[1]/div[3]/div[1]
+                                    # /html/body/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]
+
+    browser.switch_to.window(browser.window_handles[0])
+    # browser.minimize_window()
+
+# browser.switch_to.window(browser.window_handles[1])
+# browser.switch_to.window(browser.window_handles[2])
+
+
+# --------------------
+
 def pause(pause_count):
     # I hope that one of these bottons will work.
 
@@ -312,6 +360,9 @@ def finish(url):
     print('score:',answer_count[0]/(answer_count[0]+answer_count[1]))
     print('done')
     
+# def search_dict(word):
+#     pass
+    
 
         
 def main(url):
@@ -321,6 +372,7 @@ def main(url):
     #print(english_count)
     global english_sentences
     print("you will listen", len(english_sentences)-len(answer_count[4:]), "lines")
+    print('useful keywords : (reload, ok), save, ')
     
     if english_count[0] != 0:
         english_count[0] = english_count[0] - 1
@@ -369,6 +421,10 @@ def main(url):
 
             elif(guess=='save'):
                 raise
+            elif(guess[0]=='!'):
+                # search = input('What do you want to search? ')
+                search_dict(guess[1:])
+                
             
             elif check==1 :                    
             # elif check==1 and len(guess)==len(answer): # I need to check the length if I use only "for i, j in zip(guess,answer):". Because that doesn't check every letters.
