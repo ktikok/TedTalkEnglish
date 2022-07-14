@@ -18,7 +18,7 @@ this file is tested on Ubuntu
 
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
-
+import re
 import time
 # for time sleep
 
@@ -51,6 +51,58 @@ browser.switch_to.window(browser.window_handles[0])
 # &language=ko&duration=0-6, popular
 # browser.minimize_window()
 # raise
+
+# --------------------
+def search_dict(word, page=1):
+
+    browser.switch_to.window(browser.window_handles[1])
+    # browser.minimize_window()
+    
+    while(1):
+        browser.get("https://en.dict.naver.com/#/search?range=word&page=" + str(page) + "&query=" + str(word) + "&shouldSearchOpen=false&autoConvert=")
+        
+        
+        # print(browser.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]').text)
+        for i in range(10):
+            # try:
+            # t = browser.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/div[3]/div[1]').text
+            t = browser.find_elements_by_xpath('//*[@id="searchPage_entry"]/div/div')
+
+            # print('t:',t)
+
+            if t !=[] :
+                break
+            else:
+                time.sleep(0.1)
+
+            # except:
+            #     time.sleep(1)
+        # t = t.split('\n')
+        # print(t.replace('\nAll\n','\n\n'))
+        
+        # print(re.sub(r'\nAll\n.*\n', '\n\n', t[0].text))
+        for i in range(-1,-len(t)-1,-1):
+            j = t[i].text.split('\n')
+            for k in j:
+                if k=='All':
+                    break
+                else:
+                    print(k)
+            print('')
+
+            # print(re.sub(r'\nAll\n.*', '\n', t[i].text))
+            # print(t[i].text.replace('\nAll\n','\n\n'))
+        print(english_sentences_text[english_count[0]-2])
+        q = input("If you want to stop, type 'q'")
+        if q != 'q':
+            page = page + 1
+        else:
+            break
+
+    browser.switch_to.window(browser.window_handles[0])
+    # browser.minimize_window()
+
+# --------------------
 
 
 
@@ -180,6 +232,12 @@ for i in range(10):
         print('Wating for webpage(bringing sentences)')
         time.sleep(1)
 
+
+english_sentences_text = []
+for i in english_sentences:
+    english_sentences_text.append(i.text)
+
+
 print("how many sentences? :",len(english_sentences))
 
 url=browser.current_url
@@ -222,46 +280,7 @@ english_count=[answer_count[2]]
 #'''
 #print(url)
 
-# --------------------
-def search_dict(word, i=1):
-    # if i==1:
-    #     # browser.execute_script("window.open('https://en.dict.naver.com/#/search?range=word&page=1&query=apple&shouldSearchOpen=false&autoConvert=');")
-    #     # browser.execute_script("window.open('https://en.dict.naver.com/#/search?range=meaning&page=" + str(i) + "&query=" + str(word) + "&autoConvert=');")
-    #     browser.execute_script("window.open('https://en.dict.naver.com/#/search?range=word&page=" + str(i) + "&query=" + str(word) + "&shouldSearchOpen=false&autoConvert=');")
-        
-    browser.switch_to.window(browser.window_handles[1])
-    # browser.minimize_window()
-    
-    while(1):
-        browser.get("https://en.dict.naver.com/#/search?range=word&page=" + str(i) + "&query=" + str(word) + "&shouldSearchOpen=false&autoConvert=")
-        
-        
-        # print(browser.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]').text)
-        for i in range(10):
-            try:
-                t = browser.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/div[3]/div[1]').text
-                break
-            except:
-                time.sleep(1)
-        # t = t.split('\n')
-        print(t)
-        q = input("If you want to stop, type 'q'")
-        if q != 'q':
-            i = i + 1
-        else:
-            break
-                                    # /html/body/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div/a
-                                    # /html/body/div[2]/div[2]/div[1]/div[3]/div[1]
-                                    # /html/body/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]
 
-    browser.switch_to.window(browser.window_handles[0])
-    # browser.minimize_window()
-
-# browser.switch_to.window(browser.window_handles[1])
-# browser.switch_to.window(browser.window_handles[2])
-
-
-# --------------------
 
 def pause(pause_count):
     # I hope that one of these bottons will work.
@@ -314,8 +333,8 @@ def english(english_count):
     print('')
     # if english_count!=1:
     #     print(english_sentences[english_count-2].text)
-    words = english_sentences[english_count-1]
-    words=words.text
+    words = english_sentences_text[english_count-1]
+    # words=words.text
     letter=''
     for words_1 in words:
         if (letter not in special_symbal):
@@ -390,7 +409,7 @@ def main(url):
         english(english_count[0])
             
         play(english_sentences,english_count[0])
-        answer=(english_sentences[english_count[0]-1]).text
+        answer=(english_sentences_text[english_count[0]-1])
         while(1):
             #print((english_sentences[english_count+sentence_count-1]).text)
             guess=input()
@@ -433,7 +452,7 @@ def main(url):
                 answer_count.append(english_count[0])
                 break
             else:
-                print(english_sentences[english_count[0]-1].text)
+                print(english_sentences_text[english_count[0]-1])
                 for k in range(len(guess)):
                     if k < len(answer):
                         if guess[k]==answer[k]:
